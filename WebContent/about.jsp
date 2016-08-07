@@ -21,8 +21,10 @@
 	KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 	PublicKey publicKey = keyPair.getPublic();
 	PrivateKey privateKey = keyPair.getPrivate();
+	System.out.println(session);
 	session.setAttribute("__rsaPrivateKey__", privateKey);
 	PrivateKey printKey = (PrivateKey) session.getAttribute("__rsaPrivateKey__");
+    System.out.println(printKey);
 	RSAPublicKeySpec publicSpec = (RSAPublicKeySpec) keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
 	String publicKeyModulus = publicSpec.getModulus().toString(16);
 	String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
@@ -39,7 +41,7 @@
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/rsa/rsa.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/rsa/prng4.js"></script>
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/rsa/rng.js"></script>
-        <script type="text/javascript" src="<%=request.getContextPath()%>/js/login.js"></script>		
+        <script type="text/javascript" src="<%=request.getContextPath()%>/js/login.js"></script>
 		<meta name="description" content="The Project a Bootstrap-based, Responsive HTML5 Template">
 		<meta name="author" content="htmlcoder.me">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,6 +65,7 @@
 		<script type="text/javascript">var usrHash = '<%= usrIdEm%>';</script>
 	</head>
 	<body>
+
 	<nav class="navbar navbar-default navbar-static-top no-margin" role="navigation" id="fetop">
 		<div class="container-fluid">
 			<div class="navbar-header ">
@@ -76,10 +79,11 @@
 	      			<a class="navbar-brand" href="index.do"><img src="image/logo.png"></a>    		
 	      		</div>	      		
 			</div>			
+
 		<div class="collapse navbar-collapse navbar-right " id="bs-LG-navbar-collapse-1">
 			<ul class="nav navbar-nav nav-tabs">
-				<li><a href="#fetop">Home</a></li>
-				<li><a href="about.do">About</a></li>
+				<li><a href="index.do">Home</a></li>
+				<li><a href="#fetop">About</a></li>
 				<li class="dropdown">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign In <b class="caret"></b></a>
 			<div class="dropdown-menu" style="padding:17px;">              
@@ -101,23 +105,11 @@
 		</div>
 		</div>
 	</nav>
-
-	<header id="first">
-		<div class="embed-responsive embed-responsive-16by9">
-	  		<video autoplay="" loop="" class="fillWidth fadeIn wow collapse in"
-				data-wow-delay="0.5s"
-				poster="https://s3-us-west-2.amazonaws.com/coverr/poster/Traffic-blurred2.jpg"
-				id="video-background">
-				<source src="video/theme.mp4" type="video/mp4">
-				Your browser does not support the video tag. I suggest you upgrade
-				your browser.
-	        </video>
-		</div>       
-    </header>
 	
 	<div class="jumbotron">
 		<div class="container">
 			<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+  				
   			<ol class="carousel-indicators">
    		    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
     		<li data-target="#carousel-example-generic" data-slide-to="1"></li>
@@ -125,33 +117,39 @@
     		<li data-target="#carousel-example-generic" data-slide-to="3"></li>
     		<li data-target="#carousel-example-generic" data-slide-to="4"></li>
   			</ol>
+
   			<div class="carousel-inner" role="listbox">
    	 			<div class="item active">
       				<img src="image/slide1.jpg" alt="s1">
       			 	<div class="carousel-caption">
       				</div>
     		</div>
+
     		<div class="item">
      		 	<img src="image/slide2.jpg" alt="s2">
       			<div class="carousel-caption">
       			</div>
     		</div>
+
     		<div class="item">
      		 	<img src="image/slide3.jpg" alt="s3">
       			<div class="carousel-caption">
       			</div>
     		</div>
+
     		<div class="item">
      		 	<img src="image/slide4.jpg" alt="s4">
       			<div class="carousel-caption">
       			</div>
     		</div>
+
     		<div class="item">
      		 	<img src="image/slide5.jpg" alt="s5">
       			<div class="carousel-caption">
       			</div>
     		</div>
-  		</div>
+
+  			</div>
 
   		<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
     		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -165,47 +163,17 @@
 		</div>
 	</div>
 
-	<ul class="nav nav-tabs nav-justified" id="lid">
-  	<li role="presentation"><a href="index.do#tr">Top Rating</a></li>
-  	<li role="presentation" class="active" id="sa"><a href="#sa" style="font-weight: bold; color:#0099cc;">Show all Posts</a></li>
-  	<li role="presentation" class="disabled"><a href="#lid">Scheduling</a></li>
-    <li role="presentation" class="disabled"><a href="#lid">Board</a></li>
-	</ul>
-	<div class="row" >
-  		<div class="col-xs-6 col-md-3">
-    		<a href="predetail.do?imgPath=image/hanliver.jpg&tab=showall#toppoint" class="thumbnail" style="border: 0px solid;">
-      			<img src="image/hanliver.jpg" alt="han">
-    		</a>
-    		<a href="predetail.do?imgPath=image/palace.jpg&tab=showall#toppoint" " class="thumbnail" style="border: 0px solid;">
-      			<img src="image/palace.jpg" alt="pal">
-    		</a>
-      </div>
-      <div class="col-xs-6 col-md-3">
-        <a href="predetail.do?imgPath=image/pusan.jpg&tab=showall#toppoint" class="thumbnail" style="border: 0px solid;">
-            <img src="image/pusan.jpg" alt="new">
-        </a>
-        <a href="predetail.do?imgPath=image/paris.jpg&tab=showall#toppoint" class="thumbnail" style="border: 0px solid;">
-            <img src="image/paris.jpg" alt="london">
-        </a>
-  	 </div>
-  	 <div class="col-xs-6 col-md-3">
-        <a href="predetail.do?imgPath=image/newyork.jpg&tab=showall#toppoint" class="thumbnail" style="border: 0px solid;">
-            <img src="image/newyork.jpg" alt="new">
-        </a>
-        <a href="predetail.do?imgPath=image/london.jpg&tab=showall#toppoint" class="thumbnail" style="border: 0px solid;">
-            <img src="image/london.jpg" alt="london">
-        </a>
-  	 </div>
-  	 <div class="col-xs-6 col-md-3">
-        <a href="predetail.do?imgPath=image/van.jpg&tab=showall#toppoint" class="thumbnail" style="border: 0px solid;">
-            <img src="image/van.jpg" alt="new">
-        </a>
-        <a href="predetail.do?imgPath=image/jeju.jpg&tab=showall#toppoint" class="thumbnail" style="border: 0px solid;">
-            <img src="image/jeju.jpg" alt="london">
-        </a>
-  	 </div>
+	<div class="container">
+		<div class="row" style="padding-left: 17px;padding-right: 17px;">
+		<h3>Fecan Your Trip</h3><br>
+		<h4>Plan your trip with Fecan Your Trip.</h4><h4>We make browsing for
+		 that perfect routine easy and you can even check out the customer reviews and other travel information as well.</h4>
+		 <br><h5>Bruce YS Kim, 2016</h5>
+		 <br><br>
+		 </div>
 	</div>
 
+<!-- footer-->
 	<footer class="panel-footer">
 		<div class="container">
 			<div class="row">
@@ -222,7 +190,7 @@
 				<div class="col-md-7">
 					<ul class="footer-nav">
 					<li><a href="index.do"><font color="black">Home</font></a></li>
-					<li><a href="about.do"><font color="black">About</font></a></li>
+					<li><a href="#fetop"><font color="black">About</font></a></li>
 					</ul>
 				</div>
 			</div>

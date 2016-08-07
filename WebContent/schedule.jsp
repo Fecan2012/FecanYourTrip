@@ -2,15 +2,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="bean.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <jsp:useBean id="sd" class="bean.ScheduleDAO" />
 <jsp:useBean id="md" class="bean.MemberDAO" />
 <%
-	String mem_id = (String)session.getAttribute("mem_id");
-	MemberDTO mDto = md.getMember(mem_id);
-	session.setAttribute("mem_id",mem_id); 	
-	request.setAttribute("mem_id", mem_id);
-	int scCnt = sd.getScheduleCountById(mem_id);
+	String mem_id = (String) session.getAttribute("mem_id");
+	String mem_email = "";
+	int scCnt = 0;
+	if (mem_id == null){
+		response.sendRedirect("index.do");
+	} else {
+		String grade = request.getParameter("grade");
+		MemberDTO mDto = md.getMember(mem_id);
+		mem_email = mDto.getUser_email();
+		session.setAttribute("grade", grade);
+		session.setAttribute("mem_id",mem_id); 	
+		request.setAttribute("mem_id", mem_id);
+		scCnt = sd.getScheduleCountById(mem_id);
+	}
 %>
 <html>
 	<head>
@@ -40,6 +49,12 @@
 		<link href="css/image-picker.css" rel="stylesheet">
 		<link href="jquery-ui/jquery-ui.css" rel="stylesheet" type="text/css">
 		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script>
+			var signOut = function (usrid) {
+				alert("Good Bye " + usrid + " !!");
+				window.location.href = "index.do?sectl=1";
+			};
+		</script>
 	</head>
 	<body>
 		<nav class="navbar navbar-default navbar-static-top no-margin" role="navigation" id="fetop">
@@ -60,7 +75,7 @@
 					<li><a href="afterlogin.do">Home</a></li>
 					<li><a href="afterabout.do">About</a></li>
 					<li><a href="#mypage" role="button" data-toggle="modal">Manage</a></li>
-					<li><a href="index.do">Sign Out</a></li>
+					<li><a href="javascript:signOut('<%=mem_id%>');">Sign Out</a></li>
 				</ul>
 			</div>
 		</div>
@@ -195,7 +210,7 @@
 		<form method="post" name="scheduleForm" id="scheduleForm" action="scheduleInsertPro.do">
 			<input type="hidden" name="userid" value="<%=mem_id %>">
 			<div class="modal fade" id="scheduler" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog" style="width:800px">
+				<div class="modal-dialog" style="width:55%;">
 					<div class="modal-content" >
 						<div class="modal-header">
 							<button type="button" class="close" data-dismiss="modal">
@@ -205,19 +220,17 @@
 						</div>
 						<div class="modal-body">
 							<div><label for="inputName" class="col-sm-3 control-label" style="width:210px; vertical-align: bottom">The name of the itinerary <span class="text-danger small">*</span>
-								</label>
+								</label>&nbsp;
 								<input type="text" class="form-control" id="inputName" name="inputName" maxlength="30" placeholder="Enter title in in 30 characters" required style="width:250px"> 
 								<i class="fa fa-pencil form-control-feedback"></i>
 							</div>
 							<br>
 							<div>
-								<label for="datePickerStart" class="col-sm-3 control-label">Start Date <span class="text-danger small">*</span></label>
-								<span style="padding-left:19px;"></span>
+								<label for="datePickerStart" class="col-sm-3 control-label">Start Date <span class="text-danger small">*</span></label>&nbsp;&nbsp;
 								<input type="text" id="datePickerStart" name="datePickerStart" class="btn btn-default-transparent" value="" placeholder="Choose the Date">
 							</div>
 							<div>
-								<label for="datePickerEnd" class="col-sm-3 control-label">End Date <span class="text-danger small">*</span></label>
-								<span style="padding-left:19px;"></span>
+								<label for="datePickerEnd" class="col-sm-3 control-label">End Date <span class="text-danger small">*</span></label>&nbsp;&nbsp;
 								<input type="text" id="datePickerEnd" name="datePickerEnd" class="btn btn-default-transparent" value="" placeholder="Choose the Date">
 							</div>
 							<div>
@@ -236,8 +249,8 @@
 							</div>
 							<div>
 								<label for="inputName" class="col-sm-3 control-label" style="width:220px;">Description of The Schedule</label>
-								<span style="padding-left:19px;"></span>
-								<input type="text" class="form-control" id="inputDesc" name="inputDesc" placeholder="Comment on Your Trip" required style="width:530px;"> 
+								
+								<input type="text" class="form-control" id="inputDesc" name="inputDesc" placeholder="Comment on Your Trip" required style="width:500px;"> 
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -256,14 +269,14 @@
 					<div class="form-group has-feedback">
 						<label for="inputUserName" class="col-sm-3 control-label">Your ID</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" name="mem_id" id="inputUserName" readonly="true" value="<%=mDto.getUser_id()%>" required> 
+							<input type="text" class="form-control" name="mem_id" id="inputUserName" readonly="true" value="<%=mem_id%>" required> 
 							<i class="fa fa-user form-control-feedback"></i>
 						</div>
 					</div>
 					<div class="form-group has-feedback">
 						<label for="inputEmail" class="col-sm-3 control-label">Your E-mail</label>
 						<div class="col-sm-8">
-							<input type="email" class="form-control" name="email" id="inputEmail" placeholder="<%=mDto.getUser_email()%>" value="" required> 
+							<input type="email" class="form-control" name="email" id="inputEmail" placeholder="<%=mem_email%>" value="" required> 
 							<i class="fa fa-envelope form-control-feedback"></i>
 						</div>
 					</div>

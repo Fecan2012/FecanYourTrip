@@ -2,18 +2,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="bean.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <jsp:useBean id="bd" class="bean.BoardDAO" />
 <jsp:useBean id="md" class="bean.MemberDAO" />
-
 <%
-	String mem_id = (String)session.getAttribute("mem_id");
-	session.setAttribute("mem_id",mem_id); 	
-	request.setAttribute("mem_id", mem_id);
-	MemberDTO mDto = md.getMember(mem_id);
-	int artCnt = bd.getArticleCount();
+	String mem_id = (String) session.getAttribute("mem_id");
+	String mem_email = "";
+	int artCnt = 0;
+	if (mem_id == null){
+		response.sendRedirect("index.do");
+	} else {
+		String grade = request.getParameter("grade");
+		MemberDTO mDto = md.getMember(mem_id);
+		mem_email = mDto.getUser_email();
+		session.setAttribute("grade", grade);
+		session.setAttribute("mem_id",mem_id); 	
+		artCnt = bd.getArticleCount();
+	}
 %>
-
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -40,6 +46,12 @@
 		<link href="css/skins/light_blue.css" rel="stylesheet">
 		<link href="css/custom.css" rel="stylesheet">
 		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script>
+			var signOut = function (usrid) {
+				alert("Good Bye " + usrid + " !!");
+				window.location.href = "index.do?sectl=1";
+			};
+		</script>
 	</head>
 	<body>
 	<nav class="navbar navbar-default navbar-static-top no-margin" role="navigation" id="fetop">
@@ -61,7 +73,7 @@
 				<li><a href="afterlogin.do">Home</a></li>
 				<li><a href="afterabout.do">About</a></li>
 				<li><a href="#mypage" role="button" data-toggle="modal">Manage</a></li>
-				<li><a href="index.do">Sign Out</a></li>
+				<li><a href="javascript:signOut('<%=mem_id%>');">Sign Out</a></li>
 			</ul>
 		</div>
 	</div>
@@ -264,14 +276,14 @@
 					<div class="form-group has-feedback">
 						<label for="inputUserName" class="col-sm-3 control-label">Your ID</label>
 						<div class="col-sm-8">
-							<input type="text" class="form-control" name="mem_id" id="inputUserName" readonly="true" value="<%=mDto.getUser_id()%>" required> 
+							<input type="text" class="form-control" name="mem_id" id="inputUserName" readonly="true" value="<%=mem_id%>" required> 
 							<i class="fa fa-user form-control-feedback"></i>
 						</div>
 					</div>
 					<div class="form-group has-feedback">
 						<label for="inputEmail" class="col-sm-3 control-label">Your E-mail</label>
 						<div class="col-sm-8">
-							<input type="email" class="form-control" name="email" id="inputEmail" placeholder="<%=mDto.getUser_email()%>" value="" required> 
+							<input type="email" class="form-control" name="email" id="inputEmail" placeholder="<%=mem_email%>" value="" required> 
 							<i class="fa fa-envelope form-control-feedback"></i>
 						</div>
 					</div>

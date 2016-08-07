@@ -11,8 +11,8 @@
 <%@ page import="java.security.spec.RSAPrivateKeySpec"%>
 <%@ page import="java.security.spec.RSAPublicKeySpec"%>
 <%@ page import="javax.crypto.Cipher"%>
+<!DOCTYPE html>
 <jsp:useBean id="md" class="bean.MemberDAO" />
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
 	final int KEY_SIZE=1024;
 	KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
@@ -28,6 +28,10 @@
 	String publicKeyExponent = publicSpec.getPublicExponent().toString(16);
 	request.setAttribute("publicKeyModulus", publicKeyModulus);
 	request.setAttribute("publicKeyExponent", publicKeyExponent);
+	String mem_id = (String) session.getAttribute("mem_id");
+	if(mem_id != null){
+		response.sendRedirect("afterlogin.do");
+	}
 	HashMap<String, String> usrIdEm = md.usersIdEmail();
 %>
 <html>
@@ -108,8 +112,6 @@
 				data-wow-delay="0.5s" poster="https://s3-us-west-2.amazonaws.com/coverr/poster/Traffic-blurred2.jpg"
 				id="video-background">
 				<source src="video/theme.mp4" type="video/mp4">
-				Your browser does not support the video tag. I suggest you upgrade
-				your browser.
 	        </video>
 		</div>       
     </header>
