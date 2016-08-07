@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.*;
+import java.net.URLDecoder;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -10,15 +11,22 @@ public class ControllerAction extends HttpServlet {
 	private Map commandMap = new HashMap();
 
 	public void init(ServletConfig config) throws ServletException {
-		String props = config.getInitParameter("propertyConfig");
-		System.out.println("Path = " + props);
+		String path = this.getClass().getClassLoader().getResource("").getPath();
+		String fullPath = "";
+		try {
+			fullPath = URLDecoder.decode(path, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		String pathArr[] = fullPath.split("/classes/");
+		fullPath = pathArr[0];
+		fullPath = fullPath + "/commandPro.properties";
 		Properties pr = new Properties();
 		FileInputStream f = null;
 
 		try {
-			f = new FileInputStream(props);
+			f = new FileInputStream(fullPath);
 			pr.load(f);
-
 		} catch (IOException e) {
 			throw new ServletException(e);
 		} finally {
