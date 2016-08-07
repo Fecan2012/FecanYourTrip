@@ -37,21 +37,12 @@ import java.util.Vector;
 public class DBConnectionMgr {
 
 	private Vector connections = new Vector(10);
-	// MySQL
-	/*
-	 * private String _driver = "org.gjt.mm.mysql.Driver", _url =
-	 * "jdbc:mysql://localhost:3306/mydb?useUnicode=true&characterEncoding=UTF-8",
-	 * _user = "root", _password = "1234";
-	 */
 
-	private String _driver = "oracle.jdbc.driver.OracleDriver", _url = "jdbc:oracle:thin:@localhost:1521:xe",
-			_user = "fecan", _password = "1234";
-
+	private String _driver = "oracle.jdbc.driver.OracleDriver", _url = "jdbc:oracle:thin:@orcl.c1kfbpdtpqyc.us-west-2.rds.amazonaws.com:1521:orcl",
+			_user = "fecan", _password = "fecanfec";
 	private boolean _traceOn = false;
 	private boolean initialized = false;
-
 	private int _openConnections = 10;
-
 	private static DBConnectionMgr instance = null;
 
 	public DBConnectionMgr() {
